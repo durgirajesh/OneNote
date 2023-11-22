@@ -1,0 +1,10 @@
+Create a web app similar to google keep (keep.google.com)  with Django backend and React front-end.
+
+-> Users should be able to create an account.
+-> User should be able to able to login into the application with credentials (email/password)
+-> Users should be able to create multiple task lists once logged in.
+-> Each task list can have multiple tasks
+-> Users should be able to delete tasks or task lists.
+-> The APIS must be RESTful.
+-> Use SQLite or MySQL as the database for storing the data.
+-> Make the code available publicly on the GitHub.
