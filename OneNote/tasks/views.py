@@ -4,6 +4,8 @@ from .forms import TaskForm
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+from users.models import OneNoteUser
+
 @csrf_exempt
 def list_view(request):    
     if not request.user.is_authenticated :
@@ -15,12 +17,15 @@ def list_view(request):
         return JsonResponse({'error':'Cannot Unmarshall Content'}, status=400)
     
     form = TaskForm(json_data)
+    print(form)
+    
     if form.is_valid():
-        task = form.save()
-        task.user = request.user()
+        print(request.user)
+        task = form.save(commit=False)
+        task.user = form.cleaned_data['user']
         task.save()
 
-        return JsonResponse({'message':'success'}, {'form' : form}, status=200)
+        return JsonResponse({'message':'success'}, {'Data' : form.cleaned_data}, status=200)
     else:
         return JsonResponse({'error': form.errors}, status=400)
     

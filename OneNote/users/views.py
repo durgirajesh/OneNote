@@ -11,7 +11,7 @@ from tasks import *
 
 @csrf_exempt
 def signup_view(request):
-
+    
     if request.method == 'POST':
         try:
             json_data = json.loads(request.body.decode('utf-8'))
@@ -19,6 +19,7 @@ def signup_view(request):
             return JsonResponse({'error': 'Cannot Unmarshall Content'}, status=400)
         
         form = OneNoteUserForm(json_data)
+
         if form.is_valid(): 
             user = form.save()
             return JsonResponse({'message': 'success'}, status=200)
