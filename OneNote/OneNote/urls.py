@@ -20,5 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api.onenote/v1/users/', include('users.urls')),
-    path('api.onenote/v1/', include('tasks.urls'))
+    path('api.onenote/v1/users/tasks/', include('tasks.urls'))
 ]
