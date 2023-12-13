@@ -1,12 +1,14 @@
 from django import forms
-from .models import TasksList
-from users.models import OneNoteUser
+from .models import TasksList, Task
+from django.forms import inlineformset_factory
+
 
 class TaskForm(forms.ModelForm):
     class Meta:
-        model = TasksList
-        fields = ['user', 'title', 'description']
+        model = Task
+        fields = ['title', 'description']
 
-    # def __init__(self, *args, **kwargs):
-    #     super(TaskForm,self).__init__(*args, **kwargs)
-    #     self.fields['user'].queryset = OneNoteUser.objects.all()
+class TaskListForm(forms.ModelForm):
+    class Meta:
+        model = TasksList
+        fields = ['user']
