@@ -1,14 +1,12 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 from users.models import OneNoteUser
 from .models import TasksList
 from .forms import TaskListForm, TaskForm
-    
+import json
     
 @csrf_exempt
 @login_required

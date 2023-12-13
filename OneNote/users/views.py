@@ -1,4 +1,3 @@
-from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.csrf import csrf_exempt
@@ -19,7 +18,6 @@ def signup_view(request):
             return JsonResponse({'error': 'Cannot Unmarshall Content'}, status=400)
         
         form = OneNoteUserForm(json_data)
-
         if form.is_valid(): 
             user = form.save()
             return JsonResponse({'message': 'success'}, status=200)
@@ -45,7 +43,6 @@ def login_view(request):
         password = loginform.cleaned_data['password']
 
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             login(request, user)
 
