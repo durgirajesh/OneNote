@@ -2,9 +2,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.shortcuts import get_object_or_404
 
 from users.models import OneNoteUser
-from .models import TasksList
+from .models import TasksList, Task
 from .forms import TaskListForm, TaskForm
 import json
     
@@ -49,7 +50,7 @@ def list_view(request):
 
         if task_list_form.is_valid():
             task_list = task_list_form.save()
-            
+
             for task_data in json_tree.get('tasks', []):
                 task_form = TaskForm(task_data)
                 if task_form.is_valid():
@@ -60,3 +61,28 @@ def list_view(request):
             return JsonResponse({'message' : 'success'}, status=200)
         else:
             return JsonResponse({'error' : task_list_form.errors}, status=400)   
+
+@csrf_exempt
+@login_required
+def update_view(request):
+    if request.method == 'PUT':
+        user_id= request.GET.get('user', None)
+        task_title = request.GET.get('title', None)
+        task_description = request.GET.get('description', None)
+
+        if user_id is not None and task_title is not None and task_description is not None :
+            user = OneNoteUser.objects.get(username = user_id)
+            tasks_list = TasksList.objects.filter(user=user)
+
+            for task_list in tasks_list:
+                for task in task_list.tasks.all() : 
+                    if task.title == task_title :
+                        task.description = task_description
+                        task.save()
+            return JsonResponse({'message' : 'success'}, status=200)
+        else:
+            return JsonResponse({'message' : 'Invalid Parameters'}, status = 400)
+        
+    else:
+        return JsonResponse({'message' : 'Invalid Request'}, status=405)
+
