@@ -49,7 +49,7 @@ def list_view(request):
 
         if task_list_form.is_valid():
             task_list = task_list_form.save()
-
+            
             for task_data in json_tree.get('tasks', []):
                 task_form = TaskForm(task_data)
                 if task_form.is_valid():
@@ -59,7 +59,4 @@ def list_view(request):
                     return JsonResponse({'error':task_form.errors}, status=400)
             return JsonResponse({'message' : 'success'}, status=200)
         else:
-            return JsonResponse({'error' : task_list_form.errors}, status=400)
-        
-
-    
+            return JsonResponse({'error' : task_list_form.errors}, status=400)   
