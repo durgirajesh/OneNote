@@ -8,9 +8,13 @@ from users.models import OneNoteUser
 from .models import TasksList, Task
 from .forms import TaskListForm, TaskForm
 import json
-    
+from django.urls import path    
+from .views import list_view, update_view, delete_view, logout_view, health_check   
+
+
+
 @csrf_exempt
-@login_required
+@login_required # type: ignore
 def list_view(request):
     if request.method == 'GET':
         user_id = request.GET.get('user', None)
@@ -85,4 +89,36 @@ def update_view(request):
         
     else:
         return JsonResponse({'message' : 'Invalid Request'}, status=405)
+
+
+def delete_view(request):
+    if request.method == 'DELETE':
+        user_id= request.GET.get('user', None)
+        task_title = request.GET.get('title', None)
+
+        if user_id is not None and task_title is not None :
+            user = OneNoteUser.objects.get(username = user_id)
+            tasks_list = TasksList.objects.filter(user=user)
+
+            for task_list in tasks_list:
+                for task in task_list.tasks.all() : 
+                    if task.title == task_title :
+                        task.delete()
+            return JsonResponse({'message' : 'success'}, status=200)
+        else:
+            return JsonResponse({'message' : 'Invalid Parameters'}, status = 400)
+        
+    else:
+        return JsonResponse({'message' : 'Invalid Request'}, status=405)
+    
+
+def logout_view(request):
+    logout(request)
+    return JsonResponse({'message' : 'success'}, status=200)
+
+def health_check(request):
+    return JsonResponse({'message' : 'success'}, status=200)
+
+# Path: tasks/urls.py
+
 
