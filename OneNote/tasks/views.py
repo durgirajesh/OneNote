@@ -91,6 +91,7 @@ def update_view(request):
         return JsonResponse({'message' : 'Invalid Request'}, status=405)
 
 
+<<<<<<< HEAD
 def delete_view(request):
     if request.method == 'DELETE':
         user_id= request.GET.get('user', None)
@@ -122,3 +123,26 @@ def health_check(request):
 # Path: tasks/urls.py
 
 
+=======
+@csrf_exempt
+@login_required
+def delete_view(request):
+    if request.method == 'POST':
+        user_no = request.GET.get('user', None)
+        title = request.GET.get('title', None)
+
+        if user_no is not None and title is not None:
+            user = OneNoteUser.objects.get(username = user_no)
+            user_task_lists = TasksList.objects.filter(user=user)
+
+            for tasks_list in user_task_lists :
+                for task in tasks_list.tasks.all() :
+                    if task.title == title :
+                        task.delete()
+            return JsonResponse({'message' : 'success'}, status=200)
+        else:
+            return JsonResponse({'message' : 'Invalud Parameters'}, status=400)
+        
+    else:
+        return JsonResponse({'message' : 'Invalid Request'}, status=405)
+>>>>>>> 545d61fcc295fc883899ad807bd299f036e1808e
