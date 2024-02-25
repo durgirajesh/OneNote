@@ -14,7 +14,7 @@ from .views import list_view, update_view, delete_view, logout_view, health_chec
 
 
 @csrf_exempt
-@login_required # type: ignore
+@login_required 
 def list_view(request):
     if request.method == 'GET':
         user_id = request.GET.get('user', None)
