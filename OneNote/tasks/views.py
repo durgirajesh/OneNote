@@ -9,7 +9,6 @@ from .models import TasksList, Task
 from .forms import TaskListForm, TaskForm
 import json
 from django.urls import path    
-from .views import list_view, update_view, delete_view, logout_view, health_check   
 
 
 
