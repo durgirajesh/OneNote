@@ -29,8 +29,7 @@ def list_view(request):
                         context['tasks'].append(task_data)
                 return JsonResponse(context)
             else:
-                return JsonResponse({'username' : user_id, 'message':'Tasks List Not Found For User'}, status=404)
-            
+                return JsonResponse({'username' : user_id, 'message':'Tasks List Not Found For User'}, status=404)  
         else:
             return JsonResponse({'message':'User Not Found'}, status=404)
         
@@ -78,7 +77,6 @@ def update_view(request):
             return JsonResponse({'message' : 'success'}, status=200)
         else:
             return JsonResponse({'message' : 'Invalid Parameters'}, status = 400)
-        
     else:
         return JsonResponse({'message' : 'Invalid Request'}, status=405)
 
@@ -100,7 +98,6 @@ def delete_view(request):
             return JsonResponse({'message' : 'success'}, status=200)
         else:
             return JsonResponse({'message' : 'Invalid Parameters'}, status = 400)
-        
     else:
         return JsonResponse({'message' : 'Invalid Request'}, status=405)
     
