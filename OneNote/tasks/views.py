@@ -1,23 +1,16 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-from django.shortcuts import get_object_or_404
-
 from users.models import OneNoteUser
 from .models import TasksList, Task
 from .forms import TaskListForm, TaskForm
-import json
-from django.urls import path    
-
-
+import json  
 
 @csrf_exempt
 @login_required 
 def list_view(request):
     if request.method == 'GET':
         user_id = request.GET.get('user', None)
-        
         if user_id is not None:
             user = OneNoteUser.objects.get(username=user_id)
             tasks_list = TasksList.objects.filter(user=user)
@@ -89,9 +82,10 @@ def update_view(request):
     else:
         return JsonResponse({'message' : 'Invalid Request'}, status=405)
 
-
+@csrf_exempt
+@login_required
 def delete_view(request):
-    if request.method == 'DELETE':
+    if request.method == 'POST':
         user_id= request.GET.get('user', None)
         task_title = request.GET.get('title', None)
 
@@ -110,5 +104,3 @@ def delete_view(request):
     else:
         return JsonResponse({'message' : 'Invalid Request'}, status=405)
     
-
-

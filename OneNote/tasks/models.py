@@ -1,7 +1,6 @@
 from django.db import models
 from users.models import OneNoteUser
 
-
 class Task(models.Model):
     title = models.CharField(max_length=10)
     description = models.TextField(max_length=1000)
